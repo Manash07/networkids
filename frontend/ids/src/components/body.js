@@ -1,5 +1,7 @@
 import React from "react";
 import Sidebar from "./sidebar/sidebar";
+import Counter from "./counter/counter";
+import AlertDetails from "./alertDetails/alertDetails";
 
 export default function Body() {
   return (
@@ -10,8 +12,17 @@ export default function Body() {
             Col 1 Main
             <Sidebar />
           </div>
-          <div className="col-10 border border-dark" id="Middlesection">
+          <div
+            className="col-10 border border-dark g-0 mx-0"
+            id="Middlesection"
+          >
             Col 2 Main
+            <div class="container text-center">
+              <Counter />
+            </div>
+            <div className="container text-center mt-4 mb-4">
+              <AlertDetails />
+            </div>
           </div>
         </div>
       </div>
