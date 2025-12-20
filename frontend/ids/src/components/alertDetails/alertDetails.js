@@ -21,6 +21,8 @@ export default function AlertDetails() {
             <th>Source IP</th>
             <th>Alert</th>
             <th>Timestamp</th>
+            <th> Status</th>
+            <th>Action</th>
           </tr>
         </thead>
 
@@ -31,11 +33,31 @@ export default function AlertDetails() {
             </tr>
           ) : (
             icmpAlerts.map((alert) => (
-              <tr key={alert._id}>
+              <tr>
                 <td>{alert._id}</td>
                 <td>{alert.ip}</td>
                 <td>{alert.alert}</td>
-                <td>{new Date(alert.createdAt).toLocaleString()}</td> {/* Assuming createdAt is the timestamp field */}
+                <td>{new Date(alert.createdAt).toLocaleString()}</td>{" "}
+                {/* Assuming createdAt is the timestamp field */}
+                <td>
+                  {" "}
+                  <span class="badge rounded-pill text-bg-success">
+                    Resolved
+                  </span>{" "}
+                </td>
+                <td>
+                  {" "}
+                  <button type="button" class="btn btn-danger">
+                    {" "}
+                    <i className="bi bi-trash-fill"></i> Delete{" "}
+                  </button>{" "}
+                  <span>
+                    <button type="button" class="btn btn-success" disabled>
+                     <i class="bi bi-check-circle-fill
+                     "></i> Mark as Resolved
+                    </button>
+                  </span>{" "}
+                </td>
               </tr>
             ))
           )}
@@ -44,4 +66,3 @@ export default function AlertDetails() {
     </div>
   );
 }
-
