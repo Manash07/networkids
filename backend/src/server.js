@@ -3,12 +3,14 @@ import icmpRoute from "./route/icmp_route.js";
 import dotenv from "dotenv";
 import { connectDatabase } from "./config/database.js";
 import rateLimiter from "./middleware/rateLimiter.js";
+import cors from "cors";
+
 
 const app = express(); // Create an Express application
 
 dotenv.config(); // Load environment variables from .env file
 
-
+app.use(cors()); // Enable CORS for all routes
 
 app.use(express.json()) // Middleware to parse JSON request bodies
 

@@ -12,8 +12,6 @@ export async function getIcmpAlert(req, res) {
     }
     
     res.status(200).json(icmpAlerts); // Send the alerts as a JSON response with status 200 (OK)
-    
-   
 
 
   } catch (error) {
@@ -21,7 +19,6 @@ export async function getIcmpAlert(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
-
 
 // Controller function to post a new ICMP alert to the database
 export async function postIcmpAlert(req,res){
