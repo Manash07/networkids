@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 export default function AlertDetails() {
   const [icmpAlerts, setIcmpAlerts] = useState([]);
@@ -16,7 +18,7 @@ export default function AlertDetails() {
     <div className="container-fluid px-0">
       <table className="table">
         <thead>
-          <tr>
+          <tr key="New">
             <th>Unique ID</th>
             <th>Source IP</th>
             <th>Alert</th>
@@ -41,22 +43,46 @@ export default function AlertDetails() {
                 {/* Assuming createdAt is the timestamp field */}
                 <td>
                   {" "}
-                  <span class="badge rounded-pill text-bg-success">
-                    Resolved
+                  <span className="badge rounded-pill text-bg-danger">
+                    Unresolved
                   </span>{" "}
                 </td>
                 <td>
                   {" "}
-                  <button type="button" class="btn btn-danger">
+                  <button type="button" className="btn btn-danger">
                     {" "}
                     <i className="bi bi-trash-fill"></i> Delete{" "}
                   </button>{" "}
                   <span>
-                    <button type="button" class="btn btn-success" disabled>
-                     <i class="bi bi-check-circle-fill
-                     "></i> Mark as Resolved
-                    </button>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip>
+                          This function is still under built. Will be out soon. Visit updates section for more details.
+                        </Tooltip>
+                      }
+                    >
+                      <button className="btn btn-success">
+                        <i className="bi bi-check-circle-fill"></i> Resolved
+                      </button>
+                    </OverlayTrigger>
                   </span>{" "}
+                  <span>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip>
+                        Since it is icmp
+                        ping flood attack. The administrator is suggested to
+                        close the port to prevent further attack
+                        </Tooltip>
+                      }
+                    >
+                      <button className="btn btn-warning">
+                        <i className="bi bi-lightbulb-fill"></i>  Get tips
+                      </button>
+                    </OverlayTrigger>
+                  </span>
                 </td>
               </tr>
             ))
