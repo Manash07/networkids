@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "./sidebar/sidebar";
 import Counter from "./counter/counter";
 import AlertDetails from "./alertDetails/alertDetails";
+import LiveAlerts from "./alertDetails/liveAlert";
 
 export default function Body() {
   return (
@@ -22,7 +23,7 @@ export default function Body() {
               <AlertDetails />
             </div>
             <div className="container text-center mt-4 mb-4">
-              <h3> Statistics </h3>
+              <LiveAlerts/>
             </div>
           </div>
         </div>

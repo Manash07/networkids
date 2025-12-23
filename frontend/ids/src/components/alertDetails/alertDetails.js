@@ -31,82 +31,76 @@ export default function AlertDetails() {
         <tbody>
           {icmpAlerts.length === 0 ? (
             <tr>
-              <td colSpan="4">No ICMP alerts found</td>
+              <td colSpan="6" className="text-center">
+                No ICMP alerts found
+              </td>
             </tr>
           ) : (
             icmpAlerts.map((alert) => (
-              <tr>
+              <tr key={alert._id}>
                 <td>{alert._id}</td>
                 <td>{alert.ip}</td>
-                <td>{alert.alert}</td>
-                <td>{new Date(alert.createdAt).toLocaleString()}</td>{" "}
-                {/* Assuming createdAt is the timestamp field */}
+                <td>
+                  <span className="bg-danger text-white px-2 py-1 rounded">
+                    {alert.alert}
+                  </span>
+                </td>
+                <td>{new Date(alert.createdAt).toLocaleString()}</td>
                 <td>
                   <OverlayTrigger
                     placement="top"
                     overlay={
-                      <Tooltip id="unresolved-tooltip">
-                        This issue is yet to be solved. If it is resolved click
-                        Resolved button in the Action column.
+                      <Tooltip id={`tooltip-status-${alert._id}`}>
+                        This issue is yet to be solved. Click Resolved button if
+                        solved.
                       </Tooltip>
                     }
                   >
-                    <span className="d-inline-block">
-                      <span className="badge rounded-pill text-bg-danger">
-                        Unresolved
-                      </span>
+                    <span className="badge rounded-pill text-bg-danger">
+                      Unresolved
                     </span>
                   </OverlayTrigger>
                 </td>
-                <td>
-                  {" "}
+                <td className="d-flex gap-2">
                   <OverlayTrigger
                     placement="top"
                     overlay={
-                      <Tooltip id="unresolved-tooltip">
-                        Click to delete the alert from the record permanently.
+                      <Tooltip id={`tooltip-delete-${alert._id}`}>
+                        Click to delete the alert permanently.
                       </Tooltip>
                     }
                   >
-                    <span>
-                      <button type="button" className="btn btn-danger">
-                        {" "}
-                        <i className="bi bi-trash-fill"></i> Delete{" "}
-                      </button>{" "}
-                    </span>
+                    <button type="button" className="btn btn-danger btn-sm">
+                      <i className="bi bi-trash-fill"></i> Delete
+                    </button>
                   </OverlayTrigger>
-                  <span>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={
-                        <Tooltip style={{color:"red"}}>
-                         ! *** This function is still under development and is
-                          expected to be out soon. Visit updates section for
-                          more details *** !
-                        </Tooltip>
-                      }
-                    >
-                      <button className="btn btn-success">
-                        <i className="bi bi-check-circle-fill"></i> Resolved
-                      </button>
-                    </OverlayTrigger>
-                  </span>{" "}
-                  <span>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={
-                        <Tooltip>
-                          Since it is icmp ping flood attack. The administrator
-                          is suggested to close the port to prevent further
-                          attack
-                        </Tooltip>
-                      }
-                    >
-                      <button className="btn btn-warning">
-                        <i className="bi bi-lightbulb-fill"></i> Get tips
-                      </button>
-                    </OverlayTrigger>
-                  </span>
+
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-resolve-${alert._id}`}>
+                        This function is under development.
+                      </Tooltip>
+                    }
+                  >
+                    <button className="btn btn-success btn-sm">
+                      <i className="bi bi-check-circle-fill"></i> Resolved
+                    </button>
+                  </OverlayTrigger>
+
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-tips-${alert._id}`}>
+                        Since it is ICMP ping flood, the admin should close the
+                        port.
+                      </Tooltip>
+                    }
+                  >
+                    <button className="btn btn-warning btn-sm">
+                      <i className="bi bi-lightbulb-fill"></i> Tips
+                    </button>
+                  </OverlayTrigger>
                 </td>
               </tr>
             ))
