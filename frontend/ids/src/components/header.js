@@ -3,7 +3,7 @@ import React from "react";
 export default function Head() {
   return (
     <>
-      <nav
+      {/* <nav
         className="navbar navbar-expand-lg bg-body-tertiary"
         style={{ backgroundColor: "#e3f2fd" }}
         data-bs-theme="light"
@@ -24,7 +24,7 @@ export default function Head() {
             </button>
           </form>
         </div>
-      </nav>
+      </nav> */}
     </>
   );
 }
