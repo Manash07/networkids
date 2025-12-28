@@ -5,17 +5,17 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 export default function AlertDetails({ refresh }) {
-  const [icmpAlerts, setIcmpAlerts] = useState([]);
+  const [getAlerts, setAlerts] = useState([]);
 
-  const fetchIcmpAlerts = () => {
-    fetch("http://localhost:5001/icmp")
+  const fetchAlerts = () => {
+    fetch("http://localhost:5001/alerts")
       .then((res) => res.json())
-      .then((data) => setIcmpAlerts(data))
+      .then((data) => setAlerts(data))
       .catch((err) => console.error(err));
   };
 
   useEffect(() => {
-    fetchIcmpAlerts();
+    fetchAlerts();
   }, [refresh]);
 
   return (
@@ -31,67 +31,59 @@ export default function AlertDetails({ refresh }) {
             <th>Alert</th>
             <th>Timestamp</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          {icmpAlerts.length === 0 ? (
+          {getAlerts.length === 0 ? (
             <tr>
               <td colSpan="6" className="text-center text-muted">
                 No ICMP alerts found
               </td>
             </tr>
           ) : (
-            icmpAlerts.map((alert) => (
+            getAlerts.map((alert) => (
               <tr key={alert._id}>
                 <td>{alert._id}</td>
                 <td>{alert.ip}</td>
                 <td>{alert.alert}</td>
                 <td>{new Date(alert.createdAt).toLocaleString()}</td>
-
                 <td>
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>This issue is yet to be solved.</Tooltip>}
-                  >
-                    <span className="badge rounded-pill text-bg-danger">
-                      Unresolved
-                    </span>
-                  </OverlayTrigger>
+                  <span className="badge text-bg-danger">Unresolved</span>
                 </td>
+                <td>
+                  <div className="d-flex justify-content-center align-items-center gap-2">
+                    {/* Delete */}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Delete Alert</Tooltip>}
+                    >
+                      <button className="btn btn-sm btn-outline-danger">
+                        <i className="bi bi-trash-fill"></i>
+                      </button>
+                    </OverlayTrigger>
 
-                <td className="d-flex gap-2">
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>Delete alert permanently</Tooltip>}
-                  >
-                    <button className="btn btn-danger btn-sm">
-                      <i className="bi bi-trash-fill"></i>
-                    </button>
-                  </OverlayTrigger>
+                    {/* Tips */}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>{alert.tips}</Tooltip>}
+                    >
+                      <button className="btn btn-sm btn-outline-warning">
+                        <i className="bi bi-lightbulb-fill"></i>
+                      </button>
+                    </OverlayTrigger>
 
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>Mark as resolved</Tooltip>}
-                  >
-                    <button className="btn btn-success btn-sm">
-                      <i className="bi bi-check-circle-fill"></i>
-                    </button>
-                  </OverlayTrigger>
-
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={
-                      <Tooltip>
-                        ICMP flood detected. Consider blocking ping.
-                      </Tooltip>
-                    }
-                  >
-                    <button className="btn btn-warning btn-sm">
-                      <i className="bi bi-lightbulb-fill"></i>
-                    </button>
-                  </OverlayTrigger>
+                    {/* Resolve */}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Mark as Resolved</Tooltip>}
+                    >
+                      <button className="btn btn-sm btn-outline-success">
+                        <i className="bi bi-check-lg"></i>
+                      </button>
+                    </OverlayTrigger>
+                  </div>
                 </td>
               </tr>
             ))

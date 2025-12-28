@@ -1,7 +1,5 @@
-"use client";
-
 import express from "express";
-import icmpRoute from "./route/icmp_route.js";
+import alerts from "./route/alert_route.js";
 import dotenv from "dotenv";
 import { connectDatabase } from "./config/database.js";
 import rateLimiter from "./middleware/rateLimiter.js";
@@ -20,7 +18,7 @@ app.use(rateLimiter);
 
 const port = process.env.PORT || 5000;
 
-app.use("/icmp", icmpRoute);
+app.use("/alerts", alerts);
 
 // ================= SOCKET.IO SETUP ================= //
 
