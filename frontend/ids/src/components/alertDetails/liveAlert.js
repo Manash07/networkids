@@ -4,20 +4,24 @@ import React, { useEffect, useState } from "react"; // must import React
 import { socket } from "../../service/socket.js";
 
 export default function LiveAlert() {
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState([]); // State to hold live alerts
 
   useEffect(() => {
-    // Listen for live alerts from backend
-    socket.on("live_alert", (data) => {
-      setAlerts((prev) => [
+    // Listen for live alerts from backend when backend emits 'live_alert' event
+    socket.on("live_alert", (data) => { 
+      setAlerts((prev) => [ //
         {
           id: Date.now(), // unique key
-          ip: data.source_ip,
+          ip: data.ip,
           count: data.packet_count,
           message: data.message,
           timestamp: new Date(data.timestamp.toLocaleString()),
         },
-        ...prev,
+        ...prev, /* Append new alert to the beginning of the alerts array, basically a spread operator
+        
+        Ensures the most recent alerts appear at the top of the list
+        
+        */
       ]);
     });
 
@@ -43,7 +47,7 @@ export default function LiveAlert() {
           {alerts.map((a) => (
             <tr key={a.id}>
               <td> {a.ip}</td>
-              <td> Packet count is: {a.count} in less than 5 seconds.</td>
+              <td> Packet count is: {a.count} in less than threshold time.</td>
               <td> {a.message}</td>
             </tr>
           ))}

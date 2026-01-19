@@ -1,53 +1,112 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
-export default function Counter() {
+export default function HeuristicDisplay() {
+  const [config, setConfig] = useState({
+    threshold: "",
+    time_window: "",
+    cooldown: "",
+    interface: "",
+  });
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+
+  const fetchConfig = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/heuristic");
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      setConfig({
+        threshold: data.threshold,
+        time_window: data.time_window,
+        cooldown: data.cooldown,
+        interface: data.interface,
+      });
+      setLoading(false);
+    } catch (err) {
+      console.error("Failed to fetch heuristic config:", err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchConfig();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setConfig((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
+    try {
+      const res = await fetch("http://localhost:5001/heuristic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config),
+      });
+      const data = await res.json();
+      setMessage(res.ok ? "Configuration updated!" : `Error: ${data.message}`);
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to update configuration.");
+    }
+  };
+
+  if (loading) return <p>Loading heuristic config...</p>;
+
   return (
-    <>
-    
-      <div className="row row-cols-1 row-cols-md-3 g-4">
-        <div className="col">
-          <div className="card h-100">
-            <div className="card-body">
-              <h5 className="card-title">ICMP Ping Flood</h5>
-              <p className="card-text">This alert is for ICMP ping flood.</p>
-              <p className="card-text">Total Alerts: 10</p>
-            </div>
-            <div className="card-footer">
-              <small className="text-body-secondary">
-                Last updated 7 mins ago
-              </small>
-            </div>
-          </div>
+    <div className="container mt-3">
+      <h5 className="mb-2">Set the Parameters</h5>
+      {message && <div className="alert alert-info py-1">{message}</div>}
+      <form onSubmit={handleSubmit} className="d-flex flex-wrap align-items-end gap-2">
+        <div>
+          <label className="form-label small mb-0">Threshold</label>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            name="threshold"
+            value={config.threshold}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="col">
-          <div className="card h-100">
-            <div className="card-body">
-              <h5 className="card-title">SSH Bruteforce Attack</h5>
-              <p className="card-text">This alert is for SSH Bruteforce Attack.</p>
-              <p className="card-text">Total Alerts: 20 </p>
-            </div>
-            <div className="card-footer">
-              <small className="text-body-secondary">
-                Last updated 2 mins ago
-              </small>
-            </div>
-          </div>
+        <div>
+          <label className="form-label small mb-0">Time Window</label>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            name="time_window"
+            value={config.time_window}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="col">
-          <div className="card h-100">
-            <div className="card-body">
-              <h5 className="card-title">ARP Spoofing</h5>
-              <p className="card-text">This alert is for ARP spoofing.</p>
-              <p className="card-text">Total Alerts: 15</p>
-            </div>
-            <div className="card-footer">
-              <small className="text-body-secondary">
-                Last updated 1 mins ago
-              </small>
-            </div>
-          </div>
+        <div>
+          <label className="form-label small mb-0">Cooldown</label>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            name="cooldown"
+            value={config.cooldown}
+            onChange={handleChange}
+            required
+          />
         </div>
-      </div>
-    </>
+        <div>
+          <label className="form-label small mb-0">Interface</label>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            name="interface"
+            value={config.interface}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary btn-sm">Save</button>
+      </form>
+    </div>
   );
 }

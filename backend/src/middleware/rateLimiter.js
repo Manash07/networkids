@@ -2,7 +2,7 @@ import rateLimit from "../config/upstash.js";
 
 
 
-const rateLimiter = async (req, res, next) => {
+const rateLimiter = async (req, res, next) => { // Middleware function to limit incoming requests
 
     try{
 

@@ -1,6 +1,14 @@
-import Alert from "../model/alert_model.js";
+import {Alert} from "../model/schema.js";
 
-// Controller function to get all ICMP alerts from the database
+
+
+/**
+  * Gets intrusion from the database. It is not used in the current implementation but can 
+  * be useful for future extensions. 
+ */
+
+
+// Controller function to get all alerts from the database
 export async function getIntrusionAlert(req, res) {
   try {
     const intrusionAlerts = await Alert.find(); // Fetch all alerts 
@@ -19,7 +27,17 @@ export async function getIntrusionAlert(req, res) {
   }
 }
 
-// Controller function to post a new ICMP alert to the database
+
+/** *********************************************************************************************** */
+
+
+/**
+  * Posts a new intrusion alert to the database. It is not used in the current implementation but can 
+  * be useful for future extensions. 
+ */
+
+
+// Controller function to post a new  alert to the database
 export async function postIntrusionAlert(req,res){
   try{
     const {ip, alert} = req.body // Extract IP and alert message from the request body

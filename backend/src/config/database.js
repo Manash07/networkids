@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
-export const connectDatabase = async () =>{
+export const connectDatabase = async () =>{ // Function to connect to the MongoDB database
 
     try{
 
-        await mongoose.connect(process.env.MONGO_URI) // Connect to the MongoDB database using the connection string from environment variables
+        await mongoose.connect(process.env.MONGO_URI) // Connect to the MongoDB database
+        //  using the connection string from environment variables
         console.log("Database connected successfully")
 
     }catch(error){

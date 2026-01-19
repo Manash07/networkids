@@ -5,18 +5,25 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
 export default function AlertDetails({ refresh }) {
-  const [getAlerts, setAlerts] = useState([]);
+  const [getAlerts, setAlerts] = useState([]); // State to hold fetched alerts
 
   const fetchAlerts = () => {
-    fetch("http://localhost:5001/alerts")
-      .then((res) => res.json())
-      .then((data) => setAlerts(data))
-      .catch((err) => console.error(err));
+    fetch("http://localhost:5001/alerts") // Fetch all alerts from the backend by sending a GET request
+      .then((res) => res.json()) // Parse the response as JSON
+      .then((data) => setAlerts(data)) // Update state with fetched alerts to the getAlerts variable
+      .catch((err) => console.error(err)); // Log any errors
   };
 
-  useEffect(() => {
-    fetchAlerts();
-  }, [refresh]);
+  useEffect(() => { // Since it depends on refresh, it automaticlly fetches new data when refresh changes
+    fetchAlerts(); // Initial fetch of alerts when component mounts or refresh changes
+  }, [refresh]); 
+  
+  /* [refresh] dependency to refetch alerts when refresh prop changes 
+  
+  I tried an empty dependency array [] but it didn't work as expected (needed refreshing on new alert) 
+  So this use effect will run whenever the refresh prop (data sent by parent control) changes
+  
+  */ 
 
   return (
     <div
@@ -36,14 +43,14 @@ export default function AlertDetails({ refresh }) {
         </thead>
 
         <tbody>
-          {getAlerts.length === 0 ? (
+          {getAlerts.length === 0 ? ( // Display message if no alerts are found
             <tr>
               <td colSpan="6" className="text-center text-muted">
                 No ICMP alerts found
               </td>
             </tr>
           ) : (
-            getAlerts.map((alert) => (
+            getAlerts.map((alert) => ( // Map over alerts and display each in a table row
               <tr key={alert._id}>
                 <td>{alert._id}</td>
                 <td>{alert.ip}</td>
